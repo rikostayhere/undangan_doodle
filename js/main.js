@@ -72,6 +72,18 @@
   /* ------------------------------------------------------------------ */
   /* 3. Render data pernikahan ke DOM                                    */
   /* ------------------------------------------------------------------ */
+  // Cover photo (Masa kecil kedua mempelai)
+  if (weddingData.coverPhoto) {
+    const coverPhotoEl = document.getElementById("cover-photo");
+    const coverCaptionEl = document.getElementById("cover-photo-caption");
+    if (coverPhotoEl && weddingData.coverPhoto.src) {
+      coverPhotoEl.src = weddingData.coverPhoto.src;
+    }
+    if (coverCaptionEl && weddingData.coverPhoto.caption) {
+      coverCaptionEl.textContent = weddingData.coverPhoto.caption;
+    }
+  }
+
   document.getElementById("groom-photo").src = weddingData.groom.photo;
   document.getElementById("groom-name").textContent = weddingData.groom.fullName;
   document.getElementById("groom-parents").textContent = weddingData.groom.parents;
@@ -94,21 +106,40 @@
       <div class="event-row">${doodle("clock")}<span>${ev.time}</span></div>
       <p class="event-venue">${ev.venue}</p>
       <div class="event-row">${doodle("pin")}<span>${ev.address}</span></div>
-      <a class="btn-outline" href="${ev.mapsUrl}" target="_blank" rel="noopener">VIEW LOCATION</a>
+      <a class="btn-outline" href="${ev.mapsUrl}" target="_blank" rel="noopener">LIHAT LOKASI</a>
     `;
     eventCardsEl.appendChild(card);
   });
 
-  // Story timeline
+  // Story timeline dengan bingkai polaroid
   const markIcons = ["leaf", "bird", "flowerSmall", "ring", "heartSmall"];
   const timelineEl = document.getElementById("timeline-list");
   weddingData.story.forEach((item, i) => {
     const row = document.createElement("div");
     row.className = "timeline-item reveal-up";
+    const tiltClass = i % 2 === 0 ? "story-tilt-left" : "story-tilt-right";
+    const photoHtml = item.image
+      ? `
+        <div class="story-polaroid-wrap">
+          <div class="polaroid story-polaroid ${tiltClass}">
+            <span class="scrap-tape"></span>
+            <img src="${item.image}" alt="${item.caption || item.title}" loading="lazy" />
+            ${item.caption ? `<span class="polaroid-caption">${item.caption}</span>` : ""}
+          </div>
+        </div>
+      `
+      : "";
+
     row.innerHTML = `
       <span class="timeline-mark">${doodle(markIcons[i % markIcons.length])}</span>
-      <h3 class="timeline-title">${item.title}</h3>
-      <p class="timeline-text">${item.text}</p>
+      <div class="timeline-content">
+        <div class="timeline-head">
+          ${item.date ? `<span class="timeline-date">${item.date}</span>` : ""}
+          <h3 class="timeline-title">${item.title}</h3>
+        </div>
+        ${photoHtml}
+        <p class="timeline-text">${item.text}</p>
+      </div>
     `;
     timelineEl.appendChild(row);
   });
@@ -137,7 +168,7 @@
       <p class="gift-bank">${g.bank}</p>
       <p class="gift-number">${g.accountNumber}</p>
       <p class="gift-name">a.n. ${g.accountName}</p>
-      <button class="btn-copy" data-copy="${g.accountNumber}">Copy Account Number</button>
+      <button class="btn-copy" data-copy="${g.accountNumber}">Salin Nomor Rekening</button>
     `;
     giftCardsEl.appendChild(card);
   });
@@ -414,7 +445,7 @@
       .writeText(value)
       .then(() => {
         const original = btn.textContent;
-        btn.textContent = "Copied ✓";
+        btn.textContent = "Tersalin ✓";
         btn.classList.add("is-copied");
         setTimeout(() => {
           btn.textContent = original;

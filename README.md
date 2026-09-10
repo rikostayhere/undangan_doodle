@@ -42,17 +42,19 @@ Placeholder yang perlu diganti:
 
 | Placeholder | Lokasi di `data.js` | Keterangan |
 |---|---|---|
-| `[GROOM PHOTO]` | `groom.photo` | ganti path ke foto asli, mis. `assets/img/groom.jpg` |
-| `[BRIDE PHOTO]` | `bride.photo` | ganti path ke foto asli |
-| `[GALLERY PHOTO 1..6]` | `gallery[].src` | ganti path ke foto galeri asli |
-| `[VENUE]` | `akad.venue`, `reception.venue` | nama tempat |
-| `[GOOGLE MAPS URL]` | `akad.mapsUrl`, `reception.mapsUrl` | link Google Maps venue |
-| `[BANK ACCOUNT]` | `gifts[].accountNumber` | nomor rekening/e-wallet |
-| `[MUSIC URL]` | `music.src` | path/URL file musik (mp3), kosongkan jika tidak dipakai |
+| `[FOTO AI MASA KECIL .PNG]` | `coverPhoto.src` | ganti path ke foto AI masa kecil pasangan (format .png), mis. `assets/img/childhood.png` |
+| `[FOTO KISAH CINTA 1..5]` | `story[].image` | ganti path ke foto polaroid kisah cinta, mis. `assets/img/story-1.png` |
+| `[FOTO MEMPELAI PRIA]` | `groom.photo` | ganti path ke foto asli, mis. `assets/img/groom.jpg` |
+| `[FOTO MEMPELAI WANITA]` | `bride.photo` | ganti path ke foto asli |
+| `[FOTO GALERI 1..6]` | `gallery[].src` | ganti path ke foto galeri asli |
+| `[NAMA TEMPAT/GEDUNG]` | `akad.venue`, `reception.venue` | nama tempat |
+| `[LINK GOOGLE MAPS]` | `akad.mapsUrl`, `reception.mapsUrl` | link Google Maps venue |
+| `[NOMOR REKENING]` | `gifts[].accountNumber` | nomor rekening/e-wallet |
+| `[LINK/FILE MUSIK]` | `music.src` | path/URL file musik (mp3), kosongkan jika tidak dipakai |
 
 Foto saat ini memakai placeholder SVG bertuliskan nama section-nya (mis.
-"[GROOM PHOTO]") supaya jelas tanpa membuat halaman error. Setelah foto asli
-ditaruh di `assets/img/`, cukup ubah ekstensi path di `data.js`.
+"[FOTO AI MASA KECIL .PNG]") supaya jelas tanpa membuat halaman error. Setelah foto asli
+ditaruh di `assets/img/`, cukup ubah path di `data.js`.
 
 ## Fitur yang sudah ada
 

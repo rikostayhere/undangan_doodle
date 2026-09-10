@@ -218,6 +218,39 @@ body::before{
   color: var(--c-ink-soft);
   margin-bottom: 10px;
 }
+.cover-photo-wrap{
+  margin: 14px auto 18px;
+  display: flex;
+  justify-content: center;
+}
+.cover-polaroid{
+  width: clamp(150px, 42vw, 195px);
+  max-width: 210px;
+  padding: 8px 8px 22px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 10px 24px rgba(59, 50, 42, 0.12);
+  position: relative;
+  transition: transform 0.4s var(--ease-soft);
+}
+.cover-polaroid:hover{
+  transform: scale(1.02) rotate(-0.5deg);
+}
+.cover-polaroid img{
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  background: var(--c-beige);
+  display: block;
+  border-radius: 1px;
+}
+.cover-polaroid .scrap-tape{
+  top: -8px;
+}
+.cover-polaroid .polaroid-caption{
+  font-size: 1.15rem;
+  bottom: 4px;
+}
 .cover-names{
   font-family: var(--f-display);
   font-size: clamp(2.3rem, 7.5vw, 3.2rem);
@@ -398,12 +431,63 @@ main{ position: relative; z-index: 1; }
   height: 22px;
   color: var(--c-terracotta);
 }
+.timeline-content{
+  position: relative;
+}
+.timeline-head{
+  margin-bottom: 8px;
+}
+.timeline-date{
+  display: inline-block;
+  font-family: var(--f-script);
+  font-size: 1.3rem;
+  color: var(--c-terracotta);
+  line-height: 1;
+  margin-bottom: 2px;
+}
 .timeline-title{
   font-family: var(--f-display);
   font-style: normal;
   font-weight: 600;
   font-size: 1.35rem;
-  margin-bottom: 8px;
+  margin-bottom: 0;
+}
+.story-polaroid-wrap{
+  margin: 14px 0 16px;
+}
+.story-polaroid{
+  width: 100%;
+  max-width: 260px;
+  margin: 0;
+  padding: 8px 8px 24px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 8px 20px rgba(59, 50, 42, 0.1);
+  position: relative;
+  transition: transform 0.35s var(--ease-soft);
+}
+.story-polaroid img{
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background: var(--c-beige);
+  display: block;
+}
+.story-polaroid .polaroid-caption{
+  font-size: 1.15rem;
+  bottom: 4px;
+}
+.story-polaroid .scrap-tape{
+  top: -8px;
+}
+.story-tilt-left{
+  transform: rotate(-1.5deg);
+}
+.story-tilt-right{
+  transform: rotate(1.5deg);
+}
+.story-polaroid:hover{
+  transform: scale(1.02) rotate(0deg);
 }
 .timeline-text{
   color: var(--c-ink-soft);

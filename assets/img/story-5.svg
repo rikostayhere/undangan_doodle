@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <rect width="500" height="500" fill="#EAE0CB"/>
+  <rect x="8" y="8" width="484" height="484" fill="none" stroke="#A9896C" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <path d="M250 170 C220 120, 160 130, 160 180 C160 230, 250 290, 250 290 C250 290, 340 230, 340 180 C340 130, 280 120, 250 170 Z" fill="#D8CAB5"/>
+  <text x="50%" y="68%" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="bold" font-size="22" fill="#6B5F52">[FOTO KISAH CINTA 5]</text>
+  <text x="50%" y="76%" text-anchor="middle" font-family="sans-serif" font-size="13" letter-spacing="2" fill="#A9896C">GANTI DENGAN FOTO KAMU</text>
+</svg>
