@@ -87,7 +87,7 @@
   const eventCardsEl = document.getElementById("event-cards");
   [weddingData.akad, weddingData.reception].forEach((ev) => {
     const card = document.createElement("div");
-    card.className = "event-card reveal";
+    card.className = "event-card reveal-up";
     card.innerHTML = `
       <p class="event-label">${ev.label}</p>
       <div class="event-row">${doodle("calendar")}<span>${ev.date}</span></div>
@@ -104,7 +104,7 @@
   const timelineEl = document.getElementById("timeline-list");
   weddingData.story.forEach((item, i) => {
     const row = document.createElement("div");
-    row.className = "timeline-item reveal";
+    row.className = "timeline-item reveal-up";
     row.innerHTML = `
       <span class="timeline-mark">${doodle(markIcons[i % markIcons.length])}</span>
       <h3 class="timeline-title">${item.title}</h3>
@@ -117,7 +117,7 @@
   const scrapbookEl = document.getElementById("scrapbook-list");
   weddingData.gallery.forEach((photo) => {
     const item = document.createElement("div");
-    item.className = "scrap-item reveal";
+    item.className = "scrap-item reveal-scale";
     item.innerHTML = `
       <span class="scrap-tape"></span>
       <div class="polaroid">
@@ -132,7 +132,7 @@
   const giftCardsEl = document.getElementById("gift-cards");
   weddingData.gifts.forEach((g) => {
     const card = document.createElement("div");
-    card.className = "gift-card reveal";
+    card.className = "gift-card reveal-up";
     card.innerHTML = `
       <p class="gift-bank">${g.bank}</p>
       <p class="gift-number">${g.accountNumber}</p>
@@ -157,6 +157,11 @@
     musicBtn.classList.add("is-shown");
     floatingNav.classList.add("is-shown");
 
+    setTimeout(() => {
+      const activeBtn = document.querySelector(".nav-item.is-active") || navButtons[0];
+      if (activeBtn) updateNavPill(activeBtn);
+    }, 500);
+
     // autoplay only after this user interaction (browsers block autoplay otherwise)
     if (music.src) {
       music.play().then(() => {
@@ -166,8 +171,8 @@
       });
     }
 
-    // kick off reveal check immediately for above-the-fold content
-    requestAnimationFrame(checkReveals);
+    // kick off staggered reveal check as cover lifts
+    setTimeout(checkReveals, 350);
   });
 
   document.body.style.overflow = "hidden";
@@ -216,47 +221,106 @@
   setInterval(tickCountdown, 1000);
 
   /* ------------------------------------------------------------------ */
-  /* 7. Scroll reveal (IntersectionObserver, staggered delay)            */
+  /* 7. Scroll reveal (Fade Up, Fade Down, Staggered Slow Luxury)        */
   /* ------------------------------------------------------------------ */
-  const revealEls = Array.from(document.querySelectorAll(".reveal"));
+  const revealSelector = ".reveal, .reveal-up, .reveal-down, .reveal-left, .reveal-right, .reveal-scale";
+  const revealEls = Array.from(document.querySelectorAll(revealSelector));
+
   function checkReveals() {
-    revealEls.forEach((el) => {
+    revealEls.forEach((el, i) => {
       if (el.classList.contains("is-visible")) return;
       const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.88) {
-        el.classList.add("is-visible");
+      if (rect.top < window.innerHeight * 0.92) {
+        setTimeout(() => el.classList.add("is-visible"), (i % 5) * 140);
       }
     });
   }
 
-  let staggerCounter = new WeakMap();
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const parent = entry.target.parentElement;
           const siblingsInView = Array.from(parent.children).filter(
-            (c) => c.classList && c.classList.contains("reveal") && !c.classList.contains("is-visible")
+            (c) => c.matches && c.matches(revealSelector) && !c.classList.contains("is-visible")
           );
           const index = siblingsInView.indexOf(entry.target);
-          const delay = Math.max(index, 0) * 90;
+          const delay = Math.max(index, 0) * 160 + 50;
           setTimeout(() => entry.target.classList.add("is-visible"), delay);
           observer.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
   );
   revealEls.forEach((el) => observer.observe(el));
 
   /* ------------------------------------------------------------------ */
-  /* 8. Floating navigation: active state + smooth scroll                */
+  /* 8. Floating navigation: dynamic animations, pill & smooth glide    */
   /* ------------------------------------------------------------------ */
   const navButtons = Array.from(document.querySelectorAll(".nav-item"));
+  const navPill = document.getElementById("nav-label-pill");
+
+  function updateNavPill(activeBtn) {
+    if (!navPill || !activeBtn) return;
+    const label = activeBtn.dataset.label || activeBtn.getAttribute("aria-label");
+    if (!label) return;
+    navPill.textContent = label;
+    const pillLeft = activeBtn.offsetLeft + activeBtn.offsetWidth / 2;
+    navPill.style.left = pillLeft + "px";
+    navPill.classList.add("is-visible");
+  }
+
+  // Elegant quadratic/quartic decelerated smooth scroll
+  function smoothScrollTo(targetY, duration = 1050) {
+    const startY = window.pageYOffset || document.documentElement.scrollTop;
+    const diff = targetY - startY;
+    if (Math.abs(diff) < 2) return;
+    let start = null;
+
+    function easeOutQuart(x) {
+      return 1 - Math.pow(1 - x, 4);
+    }
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = easeOutQuart(progress);
+      window.scrollTo(0, startY + diff * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
   navButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
+      // Dynamic button pop & ripple
+      btn.classList.remove("is-clicked", "has-ripple");
+      void btn.offsetWidth;
+      btn.classList.add("is-clicked", "has-ripple");
+      setTimeout(() => btn.classList.remove("is-clicked", "has-ripple"), 650);
+
+      navButtons.forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      updateNavPill(btn);
+
       const target = document.querySelector(btn.dataset.target);
-      if (target) target.scrollIntoView({ behavior: "smooth" });
+      if (target) {
+        const targetRect = target.getBoundingClientRect();
+        const targetY = targetRect.top + window.pageYOffset - 10;
+        smoothScrollTo(targetY, 1050);
+
+        // Section transition highlight
+        const inner = target.querySelector(".section-inner") || target;
+        inner.classList.remove("section-target-active");
+        void inner.offsetWidth;
+        inner.classList.add("section-target-active");
+        setTimeout(() => inner.classList.remove("section-target-active"), 1200);
+      }
     });
   });
 
@@ -270,11 +334,14 @@
         if (entry.isIntersecting) {
           const idx = navSections.indexOf(entry.target);
           navButtons.forEach((b) => b.classList.remove("is-active"));
-          if (navButtons[idx]) navButtons[idx].classList.add("is-active");
+          if (navButtons[idx]) {
+            navButtons[idx].classList.add("is-active");
+            updateNavPill(navButtons[idx]);
+          }
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.35 }
   );
   navSections.forEach((s) => navObserver.observe(s));
 
