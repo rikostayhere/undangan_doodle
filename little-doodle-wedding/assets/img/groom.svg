@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="600" viewBox="0 0 480 600">
+  <rect width="480" height="600" fill="#EAE0CB"/>
+  <rect x="6" y="6" width="468" height="588" fill="none" stroke="#A9896C" stroke-width="1" stroke-dasharray="6 6"/>
+  <text x="50%" y="48%" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#6B5F52">[GROOM PHOTO]</text>
+  <text x="50%" y="56%" text-anchor="middle" font-family="sans-serif" font-size="13" letter-spacing="2" fill="#A9896C">REPLACE THIS IMAGE</text>
+</svg>
