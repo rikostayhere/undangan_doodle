@@ -176,10 +176,10 @@ body::before{
   will-change: transform, opacity;
 }
 #cover.is-open{
-  transform: scale(0.90);
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
+  transform: scale(0.88) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 .cover-inner{
   text-align: center;
@@ -317,6 +317,11 @@ body::before{
   letter-spacing: 0.14em;
   border-radius: 999px;
   box-shadow: 0 6px 18px rgba(59, 50, 42, 0.15);
+  position: relative;
+  z-index: 20;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.3s var(--ease-soft), color 0.3s var(--ease-soft), transform 0.2s var(--ease-soft), box-shadow 0.3s var(--ease-soft);
 }
 .btn-open:hover{
@@ -328,6 +333,7 @@ body::before{
 .btn-open:active{
   transform: translateY(0) scale(0.97);
 }
+
 
 /* ==========================================================================
    Page shell / sections

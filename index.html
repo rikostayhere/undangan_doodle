@@ -12,7 +12,39 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Caveat:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=2.1" />
+<script>
+  // Global handler langsung di head agar tombol BUKA UNDANGAN selalu berfungsi tanpa jeda
+  window.openInvitation = function () {
+    var cov = document.getElementById("cover");
+    if (cov) {
+      cov.classList.add("is-open");
+      cov.style.pointerEvents = "none";
+      setTimeout(function () {
+        cov.style.display = "none";
+      }, 950);
+    }
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+
+    var musicBtn = document.getElementById("music-btn");
+    var floatingNav = document.getElementById("floating-nav");
+    if (musicBtn) musicBtn.classList.add("is-shown");
+    if (floatingNav) floatingNav.classList.add("is-shown");
+
+    var music = document.getElementById("bg-music");
+    if (music && music.getAttribute("src") && music.getAttribute("src").trim() !== "") {
+      music.play().then(function () {
+        if (musicBtn) musicBtn.classList.add("is-playing");
+      }).catch(function () {});
+    }
+
+    var reveals = document.querySelectorAll(".reveal, .reveal-up, .reveal-down, .reveal-left, .reveal-right, .reveal-scale");
+    reveals.forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+  };
+</script>
 </head>
 <body>
 
@@ -40,10 +72,11 @@
         <span>Kepada Yth.</span>
         <strong id="guest-name">Bapak/Ibu/Saudara/i</strong>
       </div>
-      <button class="btn-open" id="btn-open">BUKA UNDANGAN</button>
+      <button class="btn-open" id="btn-open" type="button" onclick="openInvitation()">BUKA UNDANGAN</button>
     </div>
   </div>
 </div>
+
 
 <!-- floating music toggle -->
 <button class="music-btn" id="music-btn" aria-label="Putar musik">
@@ -246,22 +279,9 @@
 
 <audio id="bg-music" loop preload="none"></audio>
 
-<script src="js/data.js"></script>
-<script src="js/doodles.js"></script>
-<script src="js/main.js"></script>
-<script>
-  // Failsafe: memastikan tombol BUKA UNDANGAN selalu membuka cover bahkan jika terjadi error pada script lain
-  (function () {
-    var btn = document.getElementById("btn-open");
-    var cov = document.getElementById("cover");
-    if (btn && cov) {
-      btn.addEventListener("click", function () {
-        cov.classList.add("is-open");
-        document.body.style.overflow = "";
-      });
-    }
-  })();
-</script>
+<script src="js/data.js?v=2.1"></script>
+<script src="js/doodles.js?v=2.1"></script>
+<script src="js/main.js?v=2.1"></script>
 </body>
 </html>
 

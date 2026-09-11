@@ -33,10 +33,11 @@
   const floatingNav = document.getElementById("floating-nav");
 
   function openCover() {
-    if (!cover || cover.classList.contains("is-open")) return;
+    if (!cover) return;
 
     cover.classList.add("is-open");
     document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
 
     if (musicBtn) musicBtn.classList.add("is-shown");
     if (floatingNav) floatingNav.classList.add("is-shown");
@@ -52,35 +53,41 @@
 
     // Fallback timer jika transitionend tidak terpanggil
     setTimeout(() => {
-      if (cover && cover.classList.contains("is-open")) {
+      if (cover) {
         cover.style.display = "none";
       }
-    }, 1100);
+    }, 950);
 
     setTimeout(() => {
       const activeBtn = document.querySelector(".nav-item.is-active");
       if (activeBtn && typeof updateNavPill === "function") {
         updateNavPill(activeBtn);
       }
-    }, 500);
+    }, 400);
 
-    // Autoplay musik setelah interaksi klik pengguna
-    if (music && music.src) {
+    // Autoplay musik jika ada file musik yang diset
+    if (music && music.getAttribute("src") && music.getAttribute("src").trim() !== "") {
       const playPromise = music.play();
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
             if (musicBtn) musicBtn.classList.add("is-playing");
           })
-          .catch(() => {
-            /* Autoplay browser policy - user bisa klik manual tombol musik */
-          });
+          .catch(() => {});
       }
     }
 
-    // Picu scroll reveal saat cover terbuka
-    setTimeout(checkReveals, 350);
+    // Picu scroll reveal dan pastikan elemen terlihat
+    setTimeout(checkReveals, 200);
+    setTimeout(() => {
+      document.querySelectorAll(".reveal, .reveal-up, .reveal-down, .reveal-left, .reveal-right, .reveal-scale").forEach((el) => {
+        el.classList.add("is-visible");
+      });
+    }, 400);
   }
+
+  // Export ke window agar bisa dipanggil dari inline onclick kapan saja
+  window.openInvitation = openCover;
 
   if (btnOpen) {
     btnOpen.addEventListener("click", openCover);
@@ -90,6 +97,7 @@
   if (cover && !cover.classList.contains("is-open")) {
     document.body.style.overflow = "hidden";
   }
+
 
   /* ------------------------------------------------------------------ */
   /* 2. Guest name dari query string (?to=Nama)                          */
