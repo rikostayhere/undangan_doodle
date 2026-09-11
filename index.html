@@ -249,5 +249,19 @@
 <script src="js/data.js"></script>
 <script src="js/doodles.js"></script>
 <script src="js/main.js"></script>
+<script>
+  // Failsafe: memastikan tombol BUKA UNDANGAN selalu membuka cover bahkan jika terjadi error pada script lain
+  (function () {
+    var btn = document.getElementById("btn-open");
+    var cov = document.getElementById("cover");
+    if (btn && cov) {
+      btn.addEventListener("click", function () {
+        cov.classList.add("is-open");
+        document.body.style.overflow = "";
+      });
+    }
+  })();
+</script>
 </body>
 </html>
+

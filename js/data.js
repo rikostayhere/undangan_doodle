@@ -105,5 +105,5 @@ const weddingData = {
     src: "", // ganti dengan [LINK/FILE MUSIK], mis. "assets/audio/song.mp3"
     title: "A Thousand Years",
   },
-  hashtag: #rikoadelwedding",
+  hashtag: "#rikoadelwedding",
 };

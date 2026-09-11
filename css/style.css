@@ -168,10 +168,15 @@ body::before{
   background: var(--c-ivory);
   padding: 24px 16px;
   overflow-y: auto;
-  transition: transform 0.9s var(--ease-soft), opacity 0.8s var(--ease-soft), visibility 0s linear 0.9s;
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.95s var(--ease-luxury),
+              opacity 0.85s var(--ease-luxury),
+              visibility 0.95s linear;
+  will-change: transform, opacity;
 }
 #cover.is-open{
-  transform: translateY(-100%);
+  transform: scale(0.90);
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
@@ -182,7 +187,17 @@ body::before{
   max-width: 440px;
   margin: auto;
   position: relative;
+  transform: scale(1);
+  transition: transform 0.95s var(--ease-luxury),
+              opacity 0.8s var(--ease-luxury);
+  will-change: transform, opacity;
+  transform-origin: center center;
 }
+#cover.is-open .cover-inner{
+  transform: scale(0.86);
+  opacity: 0;
+}
+
 .cover-frame{
   border: 1px solid var(--c-paper-line);
   background: rgba(255, 255, 255, 0.55);
